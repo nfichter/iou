@@ -1,0 +1,16 @@
+@font-face {
+    font-family: "argh";
+    src: url("../fonts/Aaargh.ttf");
+}
+
+body {
+    font-family: "argh";
+}
+
+.smalltext {
+    font-size: 10pt;
+}
+
+.largetext {
+    font-size: 14pt;
+}
