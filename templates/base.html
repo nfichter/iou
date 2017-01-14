@@ -36,24 +36,28 @@
 	  </div>
 	  <div class="top-bar-right">
 	    <ul class="menu">
-	      <li><input type="search" placeholder="Search"></li>
-	      <li><button type="button" class="button">Search</button></li>
+	      <li><a class="button" href="/register">Sign up</a></li>
 	    </ul>
 	  </div>
 	</div>
       </div>
     </div>
   </div>
-    {% block body %}
-    {% endblock %}
-    <script src="../static/js/vendor/jquery.js"></script>
-    <script src="../static/js/vendor/what-input.js"></script>
-    <script src="../static/js/vendor/foundation.js"></script>
-    <script src="../static/js/foundation/foundation.core.js"></script>
-    <script src="../static/js/foundation/foundation.dropdownMenu.js"></script>
-    <script src="../static/js/foundation/foundation.util.keyboard.js"></script>
-    <script src="../static/js/foundation/foundation.util.box.js"></script>
-    <script src="../static/js/foundation/foundation.util.nest.js"></script>
-    <script src="../static/js/app.js"></script>
+  {% block body %}
+  {% endblock %}
+  <footer class="footer">
+    <div class="row">
+      <p class="text-center">&copy; IOU &mdash; 1.0.0</p>
+    </div>
+  </footer>
+  <script src="../static/js/vendor/jquery.js"></script>
+  <script src="../static/js/vendor/what-input.js"></script>
+  <script src="../static/js/vendor/foundation.js"></script>
+  <script src="../static/js/foundation/foundation.core.js"></script>
+  <script src="../static/js/foundation/foundation.dropdownMenu.js"></script>
+  <script src="../static/js/foundation/foundation.util.keyboard.js"></script>
+  <script src="../static/js/foundation/foundation.util.box.js"></script>
+  <script src="../static/js/foundation/foundation.util.nest.js"></script>
+  <script src="../static/js/app.js"></script>
   </body>
 </html>

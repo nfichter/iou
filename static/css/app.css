@@ -7,6 +7,10 @@ body {
     font-family: "argh";
 }
 
+footer {
+    font-family: sans-serif;
+}
+
 .smalltext {
     font-size: 10pt;
 }
