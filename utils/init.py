@@ -10,7 +10,7 @@ f = "data/database.db"
 db = sqlite3.connect(f)
 c = db.cursor()
 
-q = "CREATE TABLE users(username TEXT, password TEXT, userID INTEGER)"
+q = "CREATE TABLE users(username TEXT, password TEXT, email TEXT, userID INTEGER)"
 c.execute(q)
 
 q = "CREATE TABLE ious(note TEXT, amount INTEGER, dateCreated FLOAT, dateModified FLOAT, userIDLender INTEGER, userIDBorrower INTEGER, completed INTEGER)"

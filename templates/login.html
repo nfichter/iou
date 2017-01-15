@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block topbar_right %}
+<div class="top-bar-right">
+  <ul class="menu">
+    <li><a class="button" href="/register">Register</a></li>
+  </ul>
+</div>
+{% endblock %}
+
+{% block body %}
+{% if message != "" %}
+<div data-alert class="alert-box alert radius">
+  {{message}}
+  <a href="#" class="close">&times;</a>
+</div>
+{% endif %}
+
+<form method="POST" action="/auth">
+  <div class="row">
+    <div class="small-6 columns small-push-3">
+      <label>Username
+	<input type="text" placeholder="joesmith" name="user">
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-6 columns small-push-3">
+      <label>Password
+	<input type="password" placeholder="p4ssw0rd" name="pass">
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-2 columns small-push-5">
+      <button class="button" name="login" type="submit">Log in</button>
+    </div>
+    <div class="small-2 columns small-pull-4">
+      <button class="button" type="reset">Clear</button>
+    </div>
+  </div>
+</form>
+
+<!--forgot pass to be implemented-->
+{% endblock %}
