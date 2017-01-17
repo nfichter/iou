@@ -21,7 +21,7 @@ def register():
             message = "Emails don't match."
         if request.args["messages"] == "2":
             message = "Username is taken."
-    return render_template("register.html",message = message)
+    return render_template("register.html",message=message)
 
 @app.route("/login")
 def login():
@@ -41,9 +41,8 @@ def auth():
         ret = users.login(username,password)
         if ret == 0 or ret == 1:
             return redirect(url_for("login", messages=str(ret)))
-        else:
-            session["username"] = username
-            return redirect("/home")
+        session["username"] = username
+        return redirect("/home")
     elif "register" in request.form:
         username = request.form.get("user")
         password = request.form.get("pass")

@@ -13,7 +13,7 @@ c = db.cursor()
 q = "CREATE TABLE users(username TEXT, password TEXT, email TEXT, userID INTEGER)"
 c.execute(q)
 
-q = "CREATE TABLE ious(note TEXT, amount INTEGER, dateCreated FLOAT, dateModified FLOAT, userIDLender INTEGER, userIDBorrower INTEGER, completed INTEGER)"
+q = "CREATE TABLE ious(note TEXT, amount INTEGER, dateCreated FLOAT, dateModified FLOAT, userIDLender INTEGER, userIDBorrower INTEGER, completed INTEGER, iouID INTEGER)"
 c.execute(q)
 
 db.commit()

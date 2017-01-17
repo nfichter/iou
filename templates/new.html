@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block topbar_right %}
+<div class="top-bar-right">
+  <ul class="menu">
+    <li><a class="button" href="/logout">Log out</a></li>
+  </ul>
+</div>
+{% endblock %}
+
+{% block body %}
+{% if message != "" %}
+<div data-alert class="alert-box alert radius">
+  {{message}}
+  <a href="#" class="close">&times;</a>
+</div>
+{% endif %}
+
+<form method="POST" action="create">
+  <div class="row">
+	<div class="small-6 columns small-push-3">
+	  <label>What's the IOU for?
+		<input type="text" placeholder="Lunch" name="note">
+	  </label>
+	</div>
+  </div>
+  <div class="row">
+	<div class="small-6 columns small-push-3">
+	  <label>Are you lending money or borrowing money?
+	  	<br>
+		<input type="radio" name="lendOrBorrow" value="lending" id="lend"><label for="lend">Lending</label>
+		<input type="radio" name="lendOrBorrow" value="borrowing" id="borrow"><label for="borrow">Borrowing</label>
+	  </label>
+	</div>
+  </div>
+  <div class="row">
+	<div class="small-6 columns small-push-3">
+	  <label>How much money was borrowed?
+		<input type="number" placeholder="20" name="amount">
+	  </label>
+	</div>
+  </div>
+  <div class="row">
+	<div class="small-6 columns small-push-3">
+	  <label>Does the person you are lending/borrowing from have an account?
+	  	<br>
+		<input type="radio" name="otherAccount" value="yes" id="yes"><label for="yes">Yes</label>
+		<input type="radio" name="otherAccount" value="no" id="no"><label for="no">No</label>
+	  </label>
+	</div>
+  </div>
+  <div id="reveal-if-yes">
+    <div class="row">
+	  <div class="small-6 columns small-push-3">
+	    <label>Enter their account:
+		  <input type="text" placeholder="janesmith" name="accountName">
+	    </label>
+	  </div>
+    </div>
+  </div>
+  <div id="reveal-if-no">
+    <div class="row">
+	  <div class="small-6 columns small-push-3">
+	    <label>Enter a nickname for them
+	      <input type="text" placeholder="Jane Smith" name="noAccountName">
+	    </label>
+	  </div>
+    </div>
+  </div>
+</form>
+
+<script language="JavaScript" type="text/javascript" src="../static/js/jquery-3.1.1.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="../static/js/showhide.js"></script>
+<script src=""></script>
+{% endblock %}
