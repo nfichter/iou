@@ -16,12 +16,13 @@
 </div>
 {% endif %}
 
-<form method="POST" action="create">
+<form method="POST" action="/create">
   <div class="row">
 	<div class="small-6 columns small-push-3">
 	  <label>What's the IOU for?
 		<input type="text" placeholder="Lunch" name="note">
 	  </label>
+	  <hr>
 	</div>
   </div>
   <div class="row">
@@ -31,13 +32,22 @@
 		<input type="radio" name="lendOrBorrow" value="lending" id="lend"><label for="lend">Lending</label>
 		<input type="radio" name="lendOrBorrow" value="borrowing" id="borrow"><label for="borrow">Borrowing</label>
 	  </label>
+	  <hr>
 	</div>
   </div>
   <div class="row">
 	<div class="small-6 columns small-push-3">
 	  <label>How much money was borrowed?
-		<input type="number" placeholder="20" name="amount">
+	  	<div class="row">
+	  		<div class="small-1 columns">
+	  			<span class="prefix">$</span>
+	  		</div>
+	  		<div class="small-11 columns">
+				<input type="number" placeholder="20" name="amount">
+			</div>
+		</div>
 	  </label>
+	  <hr>
 	</div>
   </div>
   <div class="row">
@@ -47,6 +57,7 @@
 		<input type="radio" name="otherAccount" value="yes" id="yes"><label for="yes">Yes</label>
 		<input type="radio" name="otherAccount" value="no" id="no"><label for="no">No</label>
 	  </label>
+	  <hr>
 	</div>
   </div>
   <div id="reveal-if-yes">
@@ -55,6 +66,7 @@
 	    <label>Enter their account:
 		  <input type="text" placeholder="janesmith" name="accountName">
 	    </label>
+	    <hr>
 	  </div>
     </div>
   </div>
@@ -64,12 +76,20 @@
 	    <label>Enter a nickname for them
 	      <input type="text" placeholder="Jane Smith" name="noAccountName">
 	    </label>
+	    <hr>
 	  </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-2 columns small-push-5">
+		<button class="button" name="register" type="submit">Register</button>
+	</div>
+	<div class="small-2 columns small-pull-4">
+		<button class="button" type="reset">Clear</button>
     </div>
   </div>
 </form>
 
 <script language="JavaScript" type="text/javascript" src="../static/js/jquery-3.1.1.min.js"></script>
 <script language="JavaScript" type="text/javascript" src="../static/js/showhide.js"></script>
-<script src=""></script>
 {% endblock %}

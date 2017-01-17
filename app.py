@@ -1,86 +1,110 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 import hashlib
 from utils import users
+from utils import iou
 
 app = Flask(__name__)
 app.secret_key = "asdf"
 
 @app.route("/")
 def landing():
-    if "username" in session:
-        return redirect("/home")
-    return render_template("landing.html")
+	if "username" in session:
+		return redirect("/home")
+	return render_template("landing.html")
 
 @app.route("/register")
 def register():
-    message = ""
-    if "messages" in request.args:
-        if request.args["messages"] == "0":
-            message = "Passwords don't match."
-        if request.args["messages"] == "1":
-            message = "Emails don't match."
-        if request.args["messages"] == "2":
-            message = "Username is taken."
-    return render_template("register.html",message=message)
+	message = ""
+	if "messages" in request.args:
+		if request.args["messages"] == "0":
+			message = "Passwords don't match."
+		if request.args["messages"] == "1":
+			message = "Emails don't match."
+		if request.args["messages"] == "2":
+			message = "Username is taken."
+	return render_template("register.html",message=message)
 
 @app.route("/login")
 def login():
-    message = ""
-    if "messages" in request.args:
-        if request.args["messages"] == "0":
-            message = "Username doesn't exist."
-        if request.args["messages"] == "1":
-            message = "Incorrect password."
-    return render_template("login.html", message = message)
+	message = ""
+	if "messages" in request.args:
+		if request.args["messages"] == "0":
+			message = "Username doesn't exist."
+		if request.args["messages"] == "1":
+			message = "Incorrect password."
+	return render_template("login.html", message = message)
 
 @app.route("/auth", methods=["POST"])
 def auth():
-    if "login" in request.form:
-        username = request.form.get("user")
-        password = request.form.get("pass")
-        ret = users.login(username,password)
-        if ret == 0 or ret == 1:
-            return redirect(url_for("login", messages=str(ret)))
-        session["username"] = username
-        return redirect("/home")
-    elif "register" in request.form:
-        username = request.form.get("user")
-        password = request.form.get("pass")
-        passConf = request.form.get("passConf")
-        email = request.form.get("email")
-        emailConf = request.form.get("emailConf")
-        ret = users.register(username,password,passConf,email,emailConf)
-        if ret == 0 or ret == 1 or ret == 2:
-            return redirect(url_for("register", messages=str(ret)))
-        else:
-            return redirect("/login")
-    else:
-        return redirect("/")
+	if "login" in request.form:
+		username = request.form.get("user")
+		password = request.form.get("pass")
+		ret = users.login(username,password)
+		if ret == 0 or ret == 1:
+			return redirect(url_for("login", messages=str(ret)))
+		session["username"] = username
+		return redirect("/home")
+	elif "register" in request.form:
+		username = request.form.get("user")
+		password = request.form.get("pass")
+		passConf = request.form.get("passConf")
+		email = request.form.get("email")
+		emailConf = request.form.get("emailConf")
+		ret = users.register(username,password,passConf,email,emailConf)
+		if ret == 0 or ret == 1 or ret == 2:
+			return redirect(url_for("register", messages=str(ret)))
+		else:
+			return redirect("/login")
+	else:
+		return redirect("/")
+
+@app.route("/create", methods=["POST"])
+def create():
+	if not "username" in session:
+		return redirect("/")
+	note = request.form.get("note")
+	amount = request.form.get("amount")
+	if request.form.get("lendOrBorrow") == "lending":
+		if request.form.get("otherAccount") == "yes": #check to make sure the account actually exists
+			borrower = users.get_user(request.form.get("accountName"))["id"]
+			lender = users.get_user(session["username"])["id"]
+		else:
+			borrower = request.form.get("accountName")
+			lender = users.get_user(session["username"])["id"]
+	else:
+		if request.form.get("otherAccount") == "yes":
+			lender = users.get_user(request.form.get("accountName"))["id"]
+			borrower = users.get_user(session["username"])["id"]
+		else:
+			lender = request.form.get("accountName")
+			borrower = users.get_user(session["username"])["id"]
+	iou.create(note,amount,lender,borrower)
+	return redirect("/home") #redirect to newly created iou page once ready
 
 @app.route("/home")
 def home():
-    if not "username" in session:
-        return redirect("/")
-    return render_template("home.html")
+	if not "username" in session:
+		return redirect("/")
+	return render_template("home.html")
 
 @app.route("/new")
 def new():
-    if not "username" in session:
-        return redirect("/")
-    return render_template("new.html")
+	if not "username" in session:
+		return redirect("/")
+	return render_template("new.html")
 
 @app.route("/profile")
 def profile():
-    if not "username" in session:
-        return redirect("/")
-    return render_template("profile.html")
+	if not "username" in session:
+		return redirect("/")
+	return render_template("profile.html")
 
 @app.route("/settings")
 def settings():
-    if not "username" in session:
-        return redirect("/")
-    return render_template("settings.html")
+	if not "username" in session:
+		return redirect("/")
+	return render_template("settings.html")
 
 if __name__ == "__main__":
-    app.debug = True
-    app.run()
+	app.debug = True
+	app.run()
