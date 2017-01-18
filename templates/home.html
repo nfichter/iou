@@ -8,3 +8,31 @@
   </ul>
 </div>
 {% endblock %}
+
+{% block body %}
+
+<br><br><br>
+
+<div class="row">
+	<div class="small-3 columns">
+		<div class="callout">
+			<span class="smalltext float-left">Recent IOUs</span>
+			<span class="smalltext float-right"><a href="/ious">Details</a></span>
+			<hr>
+			{% if iouList is none %}
+				<p>You don't have any IOUs.<p>
+				<a class="button" href="/new">Create one!</a>
+			{% else %}
+				{% for iou in iouList %}
+					{% if iou[4] == userID %}
+						<p>You lent ${{iou[1]}} to {{iou[5]}} on {{iou[3]}} for {{iou[0]}}. (IOU ID: {{iou[10]}})</p>
+					{% else %}
+						<p>You borrowed ${{iou[1]}} from {{iou[5]}} on {{iou[3]}} for {{iou[0]}}. (IOU ID: {{iou[10]}})</p>
+					{% endif %}
+				{% endfor %}
+			{% endif %}
+		</div>
+	</div>
+</div>	
+
+{% endblock %}

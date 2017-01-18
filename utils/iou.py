@@ -2,7 +2,7 @@ import sqlite3
 import datetime
 
 #returns iouID
-def create(note,amount,userIDLender,userIDBorrower):
+def create(note,amount,userIDLender,userIDBorrower,borrowOrLend,accountOrName):
 	f = "data/database.db"
 	db = sqlite3.connect(f)
 	c = db.cursor()
@@ -18,7 +18,7 @@ def create(note,amount,userIDLender,userIDBorrower):
 		
 	currentTime = datetime.datetime.utcfromtimestamp(0)
 		
-	c.execute("INSERT INTO ious VALUES('%s','%s','%s','%s','%s','%s','%s','%s')" %(note,amount,currentTime,currentTime,userIDLender,userIDBorrower,0,iouID))
+	c.execute("INSERT INTO ious VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')" %(note,amount,currentTime,currentTime,userIDLender,userIDBorrower,borrowOrLend,accountOrName,0,iouID))
 
 	db.commit()
 	db.close()
@@ -45,3 +45,21 @@ def modify(iouID,amountPaid,dateModified):
 	
 	db.commit()
 	db.close()
+	
+#returns a list of all of a user's IOUs, None if the user has no IOUs
+def getIOUs(userID):
+	f = "data/database.db"
+	db = sqlite3.connect(f)
+	c = db.cursor()
+	
+	c.execute("SELECT * FROM ious WHERE userIDLender='%s' OR userIDBorrower='%s'" %(userID,userID))
+	res = c.fetchall()
+	
+	if res == None:
+		return None
+	
+	ret = []
+	for line in res:
+		ret.append(line)
+		
+	return ret

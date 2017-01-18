@@ -65,33 +65,40 @@ def create():
 	note = request.form.get("note")
 	amount = request.form.get("amount")
 	if request.form.get("lendOrBorrow") == "lending":
+		borrowOrLend = "lend"
 		if request.form.get("otherAccount") == "yes": 
+			accountOrName = "account"
 			if users.get_user(request.form.get("accountName")) is not None:
 				borrower = users.get_user(request.form.get("accountName"))["id"]
 				lender = users.get_user(session["username"])["id"]
 			else:
 				return redirect(url_for("new", messages="User does not exist."))
 		else:
+			accountOrName = "name"
 			borrower = request.form.get("accountName")
 			lender = users.get_user(session["username"])["id"]
 	else:
+		borrowOrLend = "borrow"
 		if request.form.get("otherAccount") == "yes":
+			accountOrName = "account"
 			if users.get_user(request.form.get("accountName")) is not None:
 				lender = users.get_user(request.form.get("accountName"))["id"]
 				borrower = users.get_user(session["username"])["id"]
 			else:
 				return redirect(url_for("new", messages="User does not exist."))
 		else:
+			accountOrName = "name"
 			lender = request.form.get("accountName")
 			borrower = users.get_user(session["username"])["id"]
-	iou.create(note,amount,lender,borrower)
+	iou.create(note,amount,lender,borrower,borrowOrLend,accountOrName)
 	return redirect("/home") #redirect to newly created iou page once ready
 
 @app.route("/home")
 def home():
 	if not "username" in session:
 		return redirect("/")
-	return render_template("home.html")
+	userID = users.get_user(session["username"])["id"]
+	return render_template("home.html",iouList=iou.getIOUs(userID),userID=userID)
 
 @app.route("/new")
 def new():
