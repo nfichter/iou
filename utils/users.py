@@ -74,3 +74,21 @@ def get_user(username):
 		user["id"] = res[3]
 		
 		return user
+		
+def get_user_by_id(userID):
+	f = "data/database.db"
+	db = sqlite3.connect(f)
+	c = db.cursor()
+	
+	c.execute("SELECT * FROM users WHERE userID=='%s'" %(userID))
+	res = c.fetchone()
+	
+	if res == None:
+		return None
+	else:
+		user = {}
+		user["username"] = username
+		user["email"] = res[2]
+		user["id"] = res[3]
+		
+		return user
