@@ -9,8 +9,7 @@ def create(note,amount,userIDLender,userIDBorrower):
 	
 	c.execute("SELECT MAX(userID) FROM users")
 	res = c.fetchone()
-
-	max_id = res[3]
+	max_id = res[0]
 	
 	if max_id == None:
 		iouID = 0
@@ -19,14 +18,14 @@ def create(note,amount,userIDLender,userIDBorrower):
 		
 	currentTime = datetime.datetime.utcfromtimestamp(0)
 		
-	c.execute("INSERT INTO ious VALUES('%s','%s','%s','%s')" %(note,amount,currentTime,currentTime,userIDLender,userIDBorrower,0,iouID))
+	c.execute("INSERT INTO ious VALUES('%s','%s','%s','%s','%s','%s','%s','%s')" %(note,amount,currentTime,currentTime,userIDLender,userIDBorrower,0,iouID))
 
 	db.commit()
 	db.close()
 	
 	return iouID
 
-#returns 0 if successful, -1 if iou with ID iouID does not exist
+#returns 0 if successful, None if iou with ID iouID does not exist
 def modify(iouID,amountPaid,dateModified):
 	f = "data/database.db"
 	db = sqlite3.connect(f)
@@ -36,7 +35,7 @@ def modify(iouID,amountPaid,dateModified):
 	res = c.fetchone()
 	
 	if res == None:
-		return -1
+		return None
 	
 	dateModified = datetime.datetime.utcfromtimestamp(0)
 	amount = int(res[1])-amountPaid

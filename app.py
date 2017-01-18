@@ -65,16 +65,22 @@ def create():
 	note = request.form.get("note")
 	amount = request.form.get("amount")
 	if request.form.get("lendOrBorrow") == "lending":
-		if request.form.get("otherAccount") == "yes": #check to make sure the account actually exists
-			borrower = users.get_user(request.form.get("accountName"))["id"]
-			lender = users.get_user(session["username"])["id"]
+		if request.form.get("otherAccount") == "yes": 
+			if users.get_user(request.form.get("accountName")) is not None:
+				borrower = users.get_user(request.form.get("accountName"))["id"]
+				lender = users.get_user(session["username"])["id"]
+			else:
+				return redirect(url_for("new", messages="User does not exist."))
 		else:
 			borrower = request.form.get("accountName")
 			lender = users.get_user(session["username"])["id"]
 	else:
 		if request.form.get("otherAccount") == "yes":
-			lender = users.get_user(request.form.get("accountName"))["id"]
-			borrower = users.get_user(session["username"])["id"]
+			if users.get_user(request.form.get("accountName")) is not None:
+				lender = users.get_user(request.form.get("accountName"))["id"]
+				borrower = users.get_user(session["username"])["id"]
+			else:
+				return redirect(url_for("new", messages="User does not exist."))
 		else:
 			lender = request.form.get("accountName")
 			borrower = users.get_user(session["username"])["id"]
