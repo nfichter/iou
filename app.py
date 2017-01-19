@@ -75,7 +75,7 @@ def create():
 				return redirect(url_for("new", messages="User does not exist."))
 		else:
 			accountOrName = "name"
-			borrower = request.form.get("accountName")
+			borrower = request.form.get("noAccountName")
 			lender = users.get_user(session["username"])["id"]
 	else:
 		borrowOrLend = "borrow"
@@ -88,7 +88,7 @@ def create():
 				return redirect(url_for("new", messages="User does not exist."))
 		else:
 			accountOrName = "name"
-			lender = request.form.get("accountName")
+			lender = request.form.get("noAccountName")
 			borrower = users.get_user(session["username"])["id"]
 	iou.create(note,amount,lender,borrower,borrowOrLend,accountOrName)
 	return redirect("/home") #redirect to newly created iou page once ready
@@ -98,7 +98,18 @@ def home():
 	if not "username" in session:
 		return redirect("/")
 	userID = users.get_user(session["username"])["id"]
-	return render_template("home.html",iouList=iou.getIOUs(userID),userID=userID)
+	iouList = iou.getIOUs(userID)
+	iouList.reverse()
+	return render_template("home.html",iouList=iouList[:3],userID=userID)
+
+@app.route("/ious")
+def ious():
+	if not "username" in session:
+		return redirect("/")
+	userID = users.get_user(session["username"])["id"]
+	iouList = iou.getIOUs(userID)
+	iouList.reverse()
+	return render_template("ious.html",iouList=iouList,userID=userID)
 
 @app.route("/new")
 def new():
@@ -117,6 +128,12 @@ def settings():
 	if not "username" in session:
 		return redirect("/")
 	return render_template("settings.html")
+
+@app.route("/logout")
+def logout():
+	if "username" in session:
+		session.pop("username")
+	return redirect("/")
 
 if __name__ == "__main__":
 	app.debug = True

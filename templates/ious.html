@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block topbar_right %}
+<div class="top-bar-right">
+  <ul class="menu">
+  	<li><a class="button" href="/new">Create an IOU</a></li>
+    <li><a class="button" href="/logout">Log out</a></li>
+  </ul>
+</div>
+{% endblock %}
+
+{% block body %}
+
+<br><br><br>
+
+<div class="row">
+	<div class="callout">
+		<span class="smalltext float-left">Recent IOUs</span>
+		{% if iouList == [] %}
+			<hr>
+			<p>You don't have any IOUs.<p>
+			<a class="button" href="/new">Create one!</a>
+		{% else %}
+			{% for iou in iouList %}
+				<hr>
+				{% if iou[6] == "lend" %}
+					{% if iou[7] == "account" %}
+						<p>You lent ${{iou[1]}} to {{users.get_user_by_id(iou[5])["username"]}} for {{iou[0]}} on {{iou[3]}}. (IOU ID: {{iou[9]}})</p>
+					{% else %}
+						<p>You lent ${{iou[1]}} to {{iou[5]}} for {{iou[0]}} on {{iou[3]}}. (IOU ID: {{iou[9]}})</p>
+					{% endif %}
+				{% else %}
+					{% if iou[7] == "account" %}
+						<p>You borrowed ${{iou[1]}} from {{users.get_user_by_id(iou[4])["username"]}} for {{iou[0]}} on {{iou[3]}}. (IOU ID: {{iou[9]}})</p>
+					{% else %}
+						<p>You borrowed ${{iou[1]}} from {{iou[4]}} for {{iou[0]}} on {{iou[3]}}. (IOU ID: {{iou[9]}})</p>
+					{% endif %}
+				{% endif %}
+			{% endfor %}
+		{% endif %}
+	</div>
+</div>	
+
+{% endblock %}

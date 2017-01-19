@@ -1,5 +1,5 @@
 import sqlite3
-import datetime
+import time
 
 #returns iouID
 def create(note,amount,userIDLender,userIDBorrower,borrowOrLend,accountOrName):
@@ -7,16 +7,18 @@ def create(note,amount,userIDLender,userIDBorrower,borrowOrLend,accountOrName):
 	db = sqlite3.connect(f)
 	c = db.cursor()
 	
-	c.execute("SELECT MAX(userID) FROM users")
+	c.execute("SELECT MAX(iouID) FROM ious")
 	res = c.fetchone()
 	max_id = res[0]
+	
+	print max_id
 	
 	if max_id == None:
 		iouID = 0
 	else:
 		iouID = max_id + 1
 		
-	currentTime = datetime.datetime.utcfromtimestamp(0)
+	currentTime = time.strftime("%Z - %Y/%m/%d, %H:%M:%S", time.localtime(time.time()))
 		
 	c.execute("INSERT INTO ious VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')" %(note,amount,currentTime,currentTime,userIDLender,userIDBorrower,borrowOrLend,accountOrName,0,iouID))
 
@@ -37,7 +39,7 @@ def modify(iouID,amountPaid,dateModified):
 	if res == None:
 		return None
 	
-	dateModified = datetime.datetime.utcfromtimestamp(0)
+	dateModified = calendar.timegm(time.gmtime())
 	amount = int(res[1])-amountPaid
 	
 	c.execute("UPDATE ious SET amount='%s' where iouID='%s'"%(amount,iouID))
@@ -46,7 +48,7 @@ def modify(iouID,amountPaid,dateModified):
 	db.commit()
 	db.close()
 	
-#returns a list of all of a user's IOUs, None if the user has no IOUs
+#returns a list of all of a user's IOUs, [] if the user has no IOUs
 def getIOUs(userID):
 	f = "data/database.db"
 	db = sqlite3.connect(f)
@@ -54,9 +56,6 @@ def getIOUs(userID):
 	
 	c.execute("SELECT * FROM ious WHERE userIDLender='%s' OR userIDBorrower='%s'" %(userID,userID))
 	res = c.fetchall()
-	
-	if res == None:
-		return None
 	
 	ret = []
 	for line in res:
