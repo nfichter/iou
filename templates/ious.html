@@ -23,19 +23,19 @@
 		{% else %}
 			{% for iou in iouList %}
 				<hr>
-				{% if iou[6] == "lend" %}
-					{% if iou[7] == "account" %}
-						<p>You lent ${{iou[1]}} to {{users.get_user_by_id(iou[5])["username"]}} for {{iou[0]}} on {{iou[3]}}. (IOU ID: {{iou[9]}})</p>
-					{% else %}
-						<p>You lent ${{iou[1]}} to {{iou[5]}} for {{iou[0]}} on {{iou[3]}}. (IOU ID: {{iou[9]}})</p>
-					{% endif %}
-				{% else %}
-					{% if iou[7] == "account" %}
-						<p>You borrowed ${{iou[1]}} from {{users.get_user_by_id(iou[4])["username"]}} for {{iou[0]}} on {{iou[3]}}. (IOU ID: {{iou[9]}})</p>
-					{% else %}
-						<p>You borrowed ${{iou[1]}} from {{iou[4]}} for {{iou[0]}} on {{iou[3]}}. (IOU ID: {{iou[9]}})</p>
-					{% endif %}
-				{% endif %}
+				<div class="row">
+					<div class="small-9 columns">
+						{% if iou[6] == "lend" %}
+							<p>You lent ${{iou[1]}} to {{iou[5]}} for {{iou[0]}} on {{iou[3]}}. (IOU ID: {{iou[9]}})</p>
+						{% else %}
+							<p>You borrowed ${{iou[1]}} from {{iou[4]}} for {{iou[0]}} on {{iou[3]}}. (IOU ID: {{iou[9]}})</p>
+						{% endif %}
+					</div>
+					<div class="small-3 columns">
+						<a href="/modify/{{iou[9]}}" class="button">Modify</a>
+						<a href="/complete/{{iou[9]}}" class="button">Complete</a>
+					</div>
+				</div>
 			{% endfor %}
 		{% endif %}
 	</div>

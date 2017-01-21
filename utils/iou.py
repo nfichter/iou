@@ -3,7 +3,7 @@ import time
 from utils import users
 
 #returns iouID
-def create(note,amount,userIDLender,userIDBorrower,borrowOrLend,accountOrName):
+def create(note,amount,usernameLender,usernameBorrower,borrowOrLend,accountOrName):
 	f = "data/database.db"
 	db = sqlite3.connect(f)
 	c = db.cursor()
@@ -21,7 +21,7 @@ def create(note,amount,userIDLender,userIDBorrower,borrowOrLend,accountOrName):
 		
 	currentTime = time.strftime("%Z - %Y/%m/%d, %H:%M:%S", time.localtime(time.time()))
 		
-	c.execute("INSERT INTO ious VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')" %(note,amount,currentTime,currentTime,userIDLender,userIDBorrower,borrowOrLend,accountOrName,0,iouID))
+	c.execute("INSERT INTO ious VALUES(?,?,?,?,?,?,?,?,?,?)",(note,amount,currentTime,currentTime,usernameLender,usernameBorrower,borrowOrLend,accountOrName,0,iouID))
 
 	db.commit()
 	db.close()
@@ -50,12 +50,12 @@ def modify(iouID,amountPaid,dateModified):
 	db.close()
 	
 #returns a list of all of a user's IOUs, [] if the user has no IOUs
-def getIOUs(userID):
+def getIOUs(username):
 	f = "data/database.db"
 	db = sqlite3.connect(f)
 	c = db.cursor()
 	
-	c.execute("SELECT * FROM ious WHERE userIDLender='%s' OR userIDBorrower='%s'" %(userID,userID))
+	c.execute("SELECT * FROM ious WHERE usernameLender='%s' OR usernameBorrower='%s'" %(username,username))
 	res = c.fetchall()
 	
 	ret = []

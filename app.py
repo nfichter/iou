@@ -69,27 +69,27 @@ def create():
 		if request.form.get("otherAccount") == "yes": 
 			accountOrName = "account"
 			if users.get_user(request.form.get("accountName")) is not None:
-				borrower = users.get_user(request.form.get("accountName"))["id"]
-				lender = users.get_user(session["username"])["id"]
+				borrower = request.form.get("accountName")
+				lender = session["username"]
 			else:
 				return redirect(url_for("new", messages="User does not exist."))
 		else:
 			accountOrName = "name"
 			borrower = request.form.get("noAccountName")
-			lender = users.get_user(session["username"])["id"]
+			lender = session["username"]
 	else:
 		borrowOrLend = "borrow"
 		if request.form.get("otherAccount") == "yes":
 			accountOrName = "account"
 			if users.get_user(request.form.get("accountName")) is not None:
-				lender = users.get_user(request.form.get("accountName"))["id"]
-				borrower = users.get_user(session["username"])["id"]
+				lender = users.get_user(request.form.get("accountName"))
+				borrower = users.get_user(session["username"])
 			else:
 				return redirect(url_for("new", messages="User does not exist."))
 		else:
 			accountOrName = "name"
 			lender = request.form.get("noAccountName")
-			borrower = users.get_user(session["username"])["id"]
+			borrower = users.get_user(session["username"])
 	iou.create(note,amount,lender,borrower,borrowOrLend,accountOrName)
 	return redirect("/home") #redirect to newly created iou page once ready
 
@@ -97,19 +97,17 @@ def create():
 def home():
 	if not "username" in session:
 		return redirect("/")
-	userID = users.get_user(session["username"])["id"]
-	iouList = iou.getIOUs(userID)
+	iouList = iou.getIOUs(session["username"])
 	iouList.reverse()
-	return render_template("home.html",iouList=iouList[:3],userID=userID)
+	return render_template("home.html",iouList=iouList[:3],username=session["username"])
 
 @app.route("/ious")
 def ious():
 	if not "username" in session:
 		return redirect("/")
-	userID = users.get_user(session["username"])["id"]
-	iouList = iou.getIOUs(userID)
+	iouList = iou.getIOUs(session["username"])
 	iouList.reverse()
-	return render_template("ious.html",iouList=iouList,userID=userID)
+	return render_template("ious.html",iouList=iouList,username=session["username"])
 
 @app.route("/new")
 def new():
@@ -117,6 +115,7 @@ def new():
 		return redirect("/")
 	return render_template("new.html")
 
+#
 @app.route("/profile")
 def profile():
 	if not "username" in session:
@@ -128,6 +127,15 @@ def settings():
 	if not "username" in session:
 		return redirect("/")
 	return render_template("settings.html")
+
+@app.route("/modify/<int:iouId>")
+def modify(iouId = None):
+	return redirect("/ious")
+	
+@app.route("/complete/<int:iouId>")
+def copmlete(iouId = None):
+	return redirect("/ious")
+#
 
 @app.route("/logout")
 def logout():

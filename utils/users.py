@@ -28,18 +28,8 @@ def register(username, password, passwordMatch, email, emailMatch):
 	if res != None:
 		return 2
 
-	c.execute("SELECT MAX(userID) FROM users")
-	res = c.fetchone()
-
-	max_id = res[0]
-	
-	if max_id == None:
-		userid = 0
-	else:
-		userid = max_id + 1
-
 	passHash = sha1(password).hexdigest()
-	c.execute("INSERT INTO users VALUES('%s','%s','%s','%s')" %(username,email,passHash,userid))
+	c.execute("INSERT INTO users VALUES('%s','%s','%s')" %(username,email,passHash))
 
 	db.commit()
 	db.close()
@@ -82,24 +72,5 @@ def get_user(username):
 		user = {}
 		user["username"] = username
 		user["email"] = res[2]
-		user["id"] = res[3]
-		
-		return user
-		
-def get_user_by_id(userID):
-	f = "data/database.db"
-	db = sqlite3.connect(f)
-	c = db.cursor()
-	
-	c.execute("SELECT * FROM users WHERE userID=='%s'" %(userID))
-	res = c.fetchone()
-	
-	if res == None:
-		return None
-	else:
-		user = {}
-		user["username"] = username
-		user["email"] = res[2]
-		user["id"] = res[3]
 		
 		return user
