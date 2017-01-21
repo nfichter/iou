@@ -1,5 +1,6 @@
 import sqlite3
 import time
+from utils import users
 
 #returns iouID
 def create(note,amount,userIDLender,userIDBorrower,borrowOrLend,accountOrName):
@@ -58,6 +59,7 @@ def getIOUs(userID):
 	res = c.fetchall()
 	
 	ret = []
+	i = 0
 	for line in res:
 		ret.append(line)
 		

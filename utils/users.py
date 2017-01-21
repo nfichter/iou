@@ -1,5 +1,14 @@
 from hashlib import sha1
 import sqlite3
+import smtplib
+
+#sends an email from the no-reply account
+def send_mail(subject, body, email):
+	smtpObj = smtplib.SMTP("smtp.gmail.com",587)
+	smtpObj.ehlo()
+	smtpObj.starttls()
+	smtpObj.login('noreply.ioweu@gmail.com','PASS_GOES_HERE')
+	smtpObj.sendmail('noreply.ioweu@gmail.com',email,'Subject: %s\n%s'%(subject,body))
 
 #returns 0 if passwords don't match, 1 if emails don't match, 2 if username is taken, 3 if successful
 def register(username, password, passwordMatch, email, emailMatch):
@@ -34,6 +43,8 @@ def register(username, password, passwordMatch, email, emailMatch):
 
 	db.commit()
 	db.close()
+
+	send_mail("Welcome to IOweU!","Hey %s! Welcome to IOweU.\nFeel free to email ioweyouapp.custserv@gmail.com if you have any questions."%(username),email)
 
 	return 3
 
