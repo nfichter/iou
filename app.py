@@ -130,12 +130,15 @@ def settings():
 
 @app.route("/modify/<int:iouId>")
 def modify(iouId = None):
-	return redirect("/ious")
+	return render_template("modify.html")
 	
 @app.route("/complete/<int:iouId>")
-def copmlete(iouId = None):
+def complete(iouId = None):
+	return render_template("complete.html")
+
+@app.route("/modcom")
+def modcom():
 	return redirect("/ious")
-#
 
 @app.route("/logout")
 def logout():

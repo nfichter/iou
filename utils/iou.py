@@ -48,6 +48,29 @@ def modify(iouID,amountPaid,dateModified):
 	
 	db.commit()
 	db.close()
+
+#returns 0 if successful, None if iou with ID iouID does not exist
+def complete(iouID,amountPaid,dateModified):
+	
+	f = "data/database.db"
+	db = sqlite3.connect(f)
+	c = db.cursor()
+	
+	c.execute("SELECT * FROM ious WHERE iouID == '%s'"%(iouID))
+	res = c.fetchone()
+	
+	if res == None:
+		return None
+	
+	dateModified = calendar.timegm(time.gmtime())
+	amount = 0
+	
+	c.execute("UPDATE ious SET amount='%s' where iouID='%s'"%(amount,iouID))
+	c.execute("UPDATE ious SET dateModified='%s' where iouID='%s'"%(dateModified,iouID))
+	c.execute("UPDATE ious SET completed='1' where iouID='%s'"%iouID)
+	
+	db.commit()
+	db.close()
 	
 #returns a list of all of a user's IOUs, [] if the user has no IOUs
 def getIOUs(username):
