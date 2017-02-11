@@ -72,6 +72,31 @@ def complete(iouID,amountPaid,dateModified):
 	db.commit()
 	db.close()
 	
+#returns a dictionary of an IOU's properties
+def getIOU(iouID):
+	f = "data/database.db"
+	db = sqlite3.connect(f)
+	c = db.cursor()
+	
+	c.execute("SELECT * FROM ious WHERE iouID='%s'" %(iouID))
+	
+	res = c.fetchall()
+	
+	ret = {}
+	for line in res:
+		ret["note"] = line[0]
+		ret["amount"] = line[1]
+		ret["dateCreated"] = line[2]
+		ret["dateModified"] = line[3]
+		ret["usernameLender"] = line[4]
+		ret["usernameBorrower"] = line[5]
+		ret["borrowOrLend"] = line[6]
+		ret["accountOrName"] = line[7]
+		ret["completed"] = line[8]
+		ret["iouID"] = line[9]
+		
+	return ret
+	
 #returns a list of all of a user's IOUs, [] if the user has no IOUs
 def getIOUs(username):
 	f = "data/database.db"

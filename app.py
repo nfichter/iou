@@ -130,14 +130,21 @@ def settings():
 
 @app.route("/modify/<int:iouId>")
 def modify(iouId = None):
-	return render_template("modify.html")
+	iouInfo = iou.getIOU(iouId)
+	print iouInfo
+	return render_template("modify.html",info=iouInfo)
 	
 @app.route("/complete/<int:iouId>")
 def complete(iouId = None):
-	return render_template("complete.html")
+	iouInfo = iou.getIOU(iouId)
+	return render_template("complete.html",info=iouInfo)
 
-@app.route("/modcom")
+@app.route("/modcom", methods=["POST"])
 def modcom():
+	if "modify" in request.form.get:
+		pass
+	if "complete" in request.form.get:
+		pass
 	return redirect("/ious")
 
 @app.route("/logout")

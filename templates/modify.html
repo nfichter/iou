@@ -10,7 +10,37 @@
 {% endblock %}
 
 {% block body %}
-<form action="/modcom">
+<br><br><br>
 
+<div class="row">
+	{% if info["borrowOrLend"] == "lend" %}
+		<p>You lent ${{info["amount"]}} to {{info["usernameBorrower"]}} for {{info["note"]}} on {{info["dateCreated"]}}. (IOU ID: {{info["iouID"]}})</p>
+	{% else %}
+		<p>You borrowed ${{info["amount"]}} from {{info["usernameLender"]}} for {{info["note"]}} on {{info["dateCreated"]}}. (IOU ID: {{info["iouID"]}})</p>
+	{% endif %}
+</div>
+
+<br>
+
+<form method="POST" action="/modcom">
+	<div class="row">
+		<div class="small-6 columns small-push-3">
+			<label>{% if info["borrowOrLend"] == "lend" %}How much money did you pay back?{% else %}How much money were you returned?{% endif %}
+				<div class="input-group">
+					<span class="input-group-label">$</span>
+					<input class="input-group-field" type="number" placeholder="20" name="amount">
+				</div>
+			</label>
+			<hr>
+		</div>
+  	</div>
+  	<div class="row">
+		<div class="small-1 columns small-push-5">
+			<button class="button expanded" name="modify" type="submit">Submit</button>
+		</div>
+		<div class="small-1 columns small-pull-5">
+			<button class="button expanded" type="reset">Clear</button>
+		</div>
+	</div>
 </form>
 {% endblock %}
