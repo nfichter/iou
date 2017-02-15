@@ -15,10 +15,10 @@
 
 <div class="row">
 	<div class="callout">
-		<span class="smalltext float-left">Recent IOUs</span>
+		<span class="smalltext float-left">Active IOUs</span>
 		{% if iouList == [] %}
 			<hr>
-			<p>You don't have any IOUs.<p>
+			<p>You don't have any active IOUs.<p>
 			<a class="button" href="/new">Create one!</a>
 		{% else %}
 			{% for iou in iouList %}
@@ -26,14 +26,34 @@
 				<div class="row">
 					<div class="small-9 columns">
 						{% if iou[6] == "lend" %}
-							<p>You lent ${{iou[1]}} to {{iou[5]}} for {{iou[0]}} on {{iou[3]}}. (IOU ID: {{iou[9]}})</p>
+							<p>You lent <span style="color:#FF717E">${{iou[1]}}</span> to <span style="color:#FF717E">{{iou[5]}}</span> for <span style="color:#FF717E">{{iou[0]}}</span> on <span style="color:FF717E">{{iou[3]}}</span>. (IOU ID: <span style="color:#FF717E">{{iou[9]}}</span>)</p>
 						{% else %}
-							<p>You borrowed ${{iou[1]}} from {{iou[4]}} for {{iou[0]}} on {{iou[3]}}. (IOU ID: {{iou[9]}})</p>
+							<p>You borrowed <span style="color:#FF717E">${{iou[1]}}</span> from <span style="color:#FF717E">{{iou[4]}}</span> for <span style="color:#FF717E">{{iou[0]}}</span> on <span style="color:FF717E">{{iou[3]}}</span>. (IOU ID: <span style="color:#FF717E">{{iou[9]}}</span>)</p>
 						{% endif %}
 					</div>
 					<div class="small-3 columns">
 						<a href="/modify/{{iou[9]}}" class="button">Modify</a>
 						<a href="/complete/{{iou[9]}}" class="button">Complete</a>
+					</div>
+				</div>
+			{% endfor %}
+		{% endif %}
+	</div>
+	<div class="callout">
+		<span class="smalltext float-left">Completed IOUs</span>
+		{% if iouListComplete == [] %}
+			<hr>
+			<p>You don't have any completed IOUs.<p>
+		{% else %}
+			{% for iou in iouListComplete %}
+				<hr>
+				<div class="row">
+					<div class="small-9 columns">
+						{% if iou[6] == "lend" %}
+							<p>You lent <span style="color:#FF717E">${{iou[1]}}</span> to <span style="color:#FF717E">{{iou[5]}}</span> for <span style="color:#FF717E">{{iou[0]}}</span> on <span style="color:#FF717E">{{iou[3]}}</span>. (IOU ID: <span style="color:#FF717E">{{iou[9]}}</span>)</p>
+						{% else %}
+							<p>You borrowed <span style="color:#FF717E">${{iou[1]}}</span> from <span style="color:#FF717E">{{iou[4]}}</span> for <span style="color:#FF717E">{{iou[0]}}</span> on <span style="color:#FF717E">{{iou[3]}}</span>. (IOU ID: <span style="color:#FF717E">{{iou[9]}}</span>)</p>
+						{% endif %}
 					</div>
 				</div>
 			{% endfor %}

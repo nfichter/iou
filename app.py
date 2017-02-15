@@ -106,8 +106,14 @@ def ious():
 	if not "username" in session:
 		return redirect("/")
 	iouList = iou.getIOUs(session["username"])
+	iouListComplete = []
+	for i in iouList:
+		if str(i[8]) == "1":
+			iouListComplete.append(i)
+			iouList.remove(i)
+	iouListComplete.reverse()
 	iouList.reverse()
-	return render_template("ious.html",iouList=iouList,username=session["username"])
+	return render_template("ious.html",iouList=iouList,iouListComplete=iouListComplete,username=session["username"])
 
 @app.route("/new")
 def new():
@@ -115,7 +121,6 @@ def new():
 		return redirect("/")
 	return render_template("new.html")
 
-#
 @app.route("/profile")
 def profile():
 	if not "username" in session:

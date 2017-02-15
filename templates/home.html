@@ -26,9 +26,9 @@
 				{% for iou in iouList %}
 					<hr>
 					{% if iou[6] == "lend" %}
-						<p>You lent ${{iou[1]}} to {{iou[5]}} for {{iou[0]}} on {{iou[3]}}. (IOU ID: {{iou[9]}})</p>
+							<p>You lent <span style="color:#FF717E">${{iou[1]}}</span> to <span style="color:#FF717E">{{iou[5]}}</span> for <span style="color:#FF717E">{{iou[0]}}</span> on <span style="color:#FF717E">{{iou[3]}}</span>. (IOU ID: <span style="color:#FF717E">{{iou[9]}}</span>)</p>
 					{% else %}
-						<p>You borrowed ${{iou[1]}} from {{iou[4]}} for {{iou[0]}} on {{iou[3]}}. (IOU ID: {{iou[9]}})</p>
+							<p>You borrowed <span style="color:#FF717E">${{iou[1]}}</span> from <span style="color:#FF717E">{{iou[4]}}</span> for <span style="color:#FF717E">{{iou[0]}}</span> on <span style="color:#FF717E">{{iou[3]}}</span>. (IOU ID: <span style="color:#FF717E">{{iou[9]}}</span>)</p>
 					{% endif %}
 				{% endfor %}
 			{% endif %}
