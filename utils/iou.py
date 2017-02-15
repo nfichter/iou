@@ -29,7 +29,7 @@ def create(note,amount,usernameLender,usernameBorrower,borrowOrLend,accountOrNam
 	return iouID
 
 #returns 0 if successful, None if iou with ID iouID does not exist
-def modify(iouID,amountPaid,dateModified):
+def modify(iouID,amountPaid):
 	f = "data/database.db"
 	db = sqlite3.connect(f)
 	c = db.cursor()
@@ -40,7 +40,7 @@ def modify(iouID,amountPaid,dateModified):
 	if res == None:
 		return None
 	
-	dateModified = calendar.timegm(time.gmtime())
+	dateModified = time.strftime("%Z - %Y/%m/%d, %H:%M:%S", time.localtime(time.time()))
 	amount = int(res[1])-amountPaid
 	
 	c.execute("UPDATE ious SET amount='%s' where iouID='%s'"%(amount,iouID))
@@ -50,7 +50,7 @@ def modify(iouID,amountPaid,dateModified):
 	db.close()
 
 #returns 0 if successful, None if iou with ID iouID does not exist
-def complete(iouID,amountPaid,dateModified):
+def complete(iouID):
 	
 	f = "data/database.db"
 	db = sqlite3.connect(f)
@@ -62,7 +62,7 @@ def complete(iouID,amountPaid,dateModified):
 	if res == None:
 		return None
 	
-	dateModified = calendar.timegm(time.gmtime())
+	dateModified = time.strftime("%Z - %Y/%m/%d, %H:%M:%S", time.localtime(time.time()))
 	amount = 0
 	
 	c.execute("UPDATE ious SET amount='%s' where iouID='%s'"%(amount,iouID))

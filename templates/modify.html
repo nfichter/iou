@@ -22,7 +22,7 @@
 
 <br>
 
-<form method="POST" action="/modcom">
+<form method="POST" action="/modcom/{{info['iouID']}}">
 	<div class="row">
 		<div class="small-6 columns small-push-3">
 			<label>{% if info["borrowOrLend"] == "lend" %}How much money did you pay back?{% else %}How much money were you returned?{% endif %}

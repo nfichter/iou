@@ -139,12 +139,12 @@ def complete(iouId = None):
 	iouInfo = iou.getIOU(iouId)
 	return render_template("complete.html",info=iouInfo)
 
-@app.route("/modcom", methods=["POST"])
-def modcom():
-	if "modify" in request.form.get:
-		pass
-	if "complete" in request.form.get:
-		pass
+@app.route("/modcom/<int:iouId>", methods=["POST"])
+def modcom(iouId = None):
+	if "modify" in request.form:
+		iou.modify(iouId,request.form.get("amount"))
+	if "complete" in request.form:
+		iou.complete(iouId)
 	return redirect("/ious")
 
 @app.route("/logout")
